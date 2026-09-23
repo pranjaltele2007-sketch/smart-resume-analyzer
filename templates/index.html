@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ResumePulse AI // Diagnostic Screener</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .font-mono-tag { font-family: 'JetBrains Mono', monospace; }
+  </style>
+</head>
+<body class="bg-slate-50/70 text-slate-800 antialiased min-h-screen">
+
+  <!-- Header Navigation -->
+  <header class="border-b border-slate-200 bg-white sticky top-0 z-20 shadow-xs">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-9 h-9 rounded-xl bg-slate-900 flex items-center justify-center text-teal-400 shadow-sm border border-slate-800">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+          </svg>
+        </div>
+        <div>
+          <span class="font-bold text-slate-900 text-sm tracking-tight block">ResumePulse AI</span>
+          <span class="text-[11px] text-slate-500 block leading-none">Automated ATS Screening & Candidate Diagnostic Suite</span>
+        </div>
+      </div>
+      <div class="flex items-center space-x-3">
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200/60">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          Engine Ready
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-6 py-8 space-y-8">
+    
+    <!-- Input Parameters Card -->
+    <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-6 lg:p-8">
+      <div class="max-w-2xl mb-6">
+        <h1 class="text-xl font-bold text-slate-900 tracking-tight">Evaluate Resume ATS Compatibility</h1>
+        <p class="text-sm text-slate-500 mt-1">Upload a candidate document to audit role-specific keywords, structural sections, and screening metrics.</p>
+      </div>
+
+      <form method="POST" action="/" enctype="multipart/form-data" class="grid grid-cols-1 md:grid-cols-12 gap-5 items-end">
+        <div class="md:col-span-4">
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Target Job Profile</label>
+          <select name="role" class="w-full bg-slate-50 border border-slate-300 text-slate-800 text-sm rounded-lg px-3.5 py-2.5 focus:bg-white focus:outline-none focus:ring-2 focus:ring-teal-600/20 focus:border-teal-600 transition">
+            <option value="Web Developer" {% if selected_role == 'Web Developer' %}selected{% endif %}>Web Developer</option>
+            <option value="Data Analyst" {% if selected_role == 'Data Analyst' %}selected{% endif %}>Data Analyst</option>
+            <option value="AI / ML Engineer" {% if selected_role == 'AI / ML Engineer' %}selected{% endif %}>AI / ML Engineer</option>
+            <option value="Cloud Engineer" {% if selected_role == 'Cloud Engineer' %}selected{% endif %}>Cloud Engineer</option>
+          </select>
+        </div>
+
+        <div class="md:col-span-5">
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Curriculum Vitae (.pdf, .docx)</label>
+          <input type="file" name="resume" accept=".pdf,.docx" required 
+                 class="w-full text-xs text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200 cursor-pointer border border-slate-300 rounded-lg bg-slate-50">
+        </div>
+
+        <div class="md:col-span-3">
+          <button type="submit" class="w-full bg-teal-800 hover:bg-teal-900 text-white text-xs font-bold uppercase tracking-wider py-3 px-4 rounded-lg shadow-sm transition duration-150 cursor-pointer flex items-center justify-center gap-2">
+            <span>Run Diagnostic</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    {% if results %}
+    <!-- Evaluation Dashboard -->
+    <div class="space-y-6">
+      
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-lg font-bold text-slate-900">Diagnostic Summary</h2>
+          <p class="text-xs text-slate-500">Target Role Profile: <span class="font-semibold text-teal-800">{{ selected_role }}</span></p>
+        </div>
+        <button onclick="window.print()" class="px-3.5 py-2 text-xs font-semibold text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 shadow-2xs flex items-center gap-2 cursor-pointer">
+          <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+          Print Report
+        </button>
+      </div>
+
+      <!-- Metric Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        
+        <div class="bg-white p-5 rounded-xl border-l-4 border-l-teal-700 border-y border-r border-slate-200 shadow-2xs">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Overall Score</span>
+          <div class="mt-2 flex items-baseline gap-1">
+            <span class="text-3xl font-extrabold text-slate-900">{{ results.total_score }}</span>
+            <span class="text-sm font-medium text-slate-400">/ 100</span>
+          </div>
+          <p class="text-[11px] text-slate-500 mt-1">Completeness & structure</p>
+        </div>
+
+        <div class="bg-white p-5 rounded-xl border-l-4 border-l-emerald-600 border-y border-r border-slate-200 shadow-2xs">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500">ATS Keyword Match</span>
+          <div class="mt-2 flex items-baseline">
+            <span class="text-3xl font-extrabold text-emerald-700">{{ results.ats_score }}%</span>
+          </div>
+          <p class="text-[11px] text-slate-500 mt-1">Taxonomy alignment rate</p>
+        </div>
+
+        <div class="bg-white p-5 rounded-xl border-l-4 border-l-sky-600 border-y border-r border-slate-200 shadow-2xs">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Matched Skills</span>
+          <div class="mt-2 flex items-baseline">
+            <span class="text-3xl font-extrabold text-sky-800">{{ results.found_skills|length }}</span>
+            <span class="text-xs font-medium text-slate-400 ml-1.5">indexed</span>
+          </div>
+          <p class="text-[11px] text-slate-500 mt-1">Verified on candidate CV</p>
+        </div>
+
+        <div class="bg-white p-5 rounded-xl border-l-4 border-l-amber-500 border-y border-r border-slate-200 shadow-2xs">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Identified Gaps</span>
+          <div class="mt-2 flex items-baseline">
+            <span class="text-3xl font-extrabold text-amber-700">{{ results.missing_skills|length }}</span>
+            <span class="text-xs font-medium text-slate-400 ml-1.5">missing keywords</span>
+          </div>
+          <p class="text-[11px] text-slate-500 mt-1">Recommended inclusions</p>
+        </div>
+
+      </div>
+
+      <!-- Skill Tag Grids -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-2xs">
+          <div class="flex items-center justify-between mb-3 border-b border-slate-100 pb-3">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700">Detected Skill Taxonomy</h3>
+            </div>
+            <span class="text-xs font-mono-tag bg-emerald-50 text-emerald-700 px-2 py-0.5 rounded font-semibold">{{ results.found_skills|length }} Present</span>
+          </div>
+          <div class="flex flex-wrap gap-2 pt-1">
+            {% for skill in results.found_skills %}
+              <span class="bg-emerald-50 text-emerald-800 border border-emerald-200/80 text-xs font-mono-tag font-medium px-2.5 py-1 rounded">
+                ✓ {{ skill }}
+              </span>
+            {% else %}
+              <span class="text-xs text-slate-400 italic">No domain-specific keywords matched.</span>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-2xs">
+          <div class="flex items-center justify-between mb-3 border-b border-slate-100 pb-3">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+              <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700">Missing Core Keywords</h3>
+            </div>
+            <span class="text-xs font-mono-tag bg-amber-50 text-amber-800 px-2 py-0.5 rounded font-semibold">{{ results.missing_skills|length }} Missing</span>
+          </div>
+          <div class="flex flex-wrap gap-2 pt-1">
+            {% for skill in results.missing_skills %}
+              <span class="bg-amber-50 text-amber-900 border border-amber-200/80 text-xs font-mono-tag font-medium px-2.5 py-1 rounded">
+                + {{ skill }}
+              </span>
+            {% else %}
+              <span class="text-xs text-emerald-700 font-medium">Full alignment. No critical keywords missing.</span>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Actionable Suggestions Tabbed Panel -->
+      <div class="bg-white rounded-xl border border-slate-200 shadow-2xs overflow-hidden">
+        <div class="flex border-b border-slate-200 bg-slate-50/70 px-4 pt-2 gap-2 text-xs font-bold">
+          <button type="button" onclick="switchTab('audit')" id="tab-btn-audit" class="px-4 py-2.5 border-b-2 border-teal-700 text-teal-800 bg-white rounded-t-lg transition">
+            Diagnostic & Structural Notes
+          </button>
+          <button type="button" onclick="switchTab('skills')" id="tab-btn-skills" class="px-4 py-2.5 border-b-2 border-transparent text-slate-500 hover:text-slate-800 rounded-t-lg transition">
+            Skill & Certification Roadmap
+          </button>
+          <button type="button" onclick="switchTab('ats')" id="tab-btn-ats" class="px-4 py-2.5 border-b-2 border-transparent text-slate-500 hover:text-slate-800 rounded-t-lg transition">
+            ATS Formatting Rules
+          </button>
+        </div>
+
+        <div id="tab-content-audit" class="p-6">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-600 mb-3">Document Completeness Checklist</h4>
+          <ul class="space-y-2.5">
+            {% for tip in results.feedback %}
+              <li class="flex items-start text-xs text-slate-700 gap-2.5 bg-slate-50 p-2.5 rounded-lg border border-slate-200/60">
+                <span class="text-amber-600 font-bold mt-0.5">•</span>
+                <span>{{ tip }}</span>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <div id="tab-content-skills" class="p-6 hidden">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-600 mb-3">Recommended Competencies for {{ selected_role }}</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-slate-700">
+            <div class="p-3.5 bg-teal-50/60 border border-teal-200/80 rounded-lg">
+              <strong class="text-teal-900 block font-semibold mb-1">Target Certifications</strong>
+              <p class="text-slate-600">Consider obtaining recognized platform credentials (AWS Certified Cloud Practitioner, Meta Front-End Developer, or Google Data Analytics) to validate core competencies.</p>
+            </div>
+            <div class="p-3.5 bg-sky-50/60 border border-sky-200/80 rounded-lg">
+              <strong class="text-sky-900 block font-semibold mb-1">Portfolio Projects</strong>
+              <p class="text-slate-600">Detail at least two end-to-end technical implementations with active production deployments and publicly reviewable GitHub repositories.</p>
+            </div>
+          </div>
+        </div>
+
+        <div id="tab-content-ats" class="p-6 hidden text-xs text-slate-600 space-y-2.5">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-600 mb-2">Parser Optimization Standards</h4>
+          <p class="bg-slate-50 p-2.5 rounded border border-slate-200/60">✓ <strong>Single-column flow:</strong> Multi-column tables and text boxes can cause standard ATS scanners to read sections out of order.</p>
+          <p class="bg-slate-50 p-2.5 rounded border border-slate-200/60">✓ <strong>Standard section headers:</strong> Use unambiguous titles such as "Experience", "Education", and "Skills".</p>
+          <p class="bg-slate-50 p-2.5 rounded border border-slate-200/60">✓ <strong>Body contact information:</strong> Keep your email, telephone, and portfolio links in the main document flow rather than embedded in file headers/footers.</p>
+        </div>
+      </div>
+
+    </div>
+    {% endif %}
+
+  </main>
+
+  <script>
+    function switchTab(tabId) {
+      const tabs = ['audit', 'skills', 'ats'];
+      tabs.forEach(t => {
+        document.getElementById('tab-content-' + t).classList.add('hidden');
+        const btn = document.getElementById('tab-btn-' + t);
+        btn.classList.remove('border-teal-700', 'text-teal-800', 'bg-white');
+        btn.classList.add('border-transparent', 'text-slate-500');
+      });
+
+      document.getElementById('tab-content-' + tabId).classList.remove('hidden');
+      const activeBtn = document.getElementById('tab-btn-' + tabId);
+      activeBtn.classList.remove('border-transparent', 'text-slate-500');
+      activeBtn.classList.add('border-teal-700', 'text-teal-800', 'bg-white');
+    }
+  </script>
+</body>
+</html>
