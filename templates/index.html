@@ -119,7 +119,7 @@
           <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Identified Gaps</span>
           <div class="mt-2 flex items-baseline">
             <span class="text-3xl font-extrabold text-amber-700">{{ results.missing_skills|length }}</span>
-            <span class="text-xs font-medium text-slate-400 ml-1.5">missing keywords</span>
+            <span class="text-xs font-medium text-slate-400 ml-1.5">skills to add</span>
           </div>
           <p class="text-[11px] text-slate-500 mt-1">Recommended inclusions</p>
         </div>
@@ -151,7 +151,7 @@
           <div class="flex items-center justify-between mb-3 border-b border-slate-100 pb-3">
             <div class="flex items-center gap-2">
               <span class="w-2 h-2 rounded-full bg-amber-500"></span>
-              <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700">Missing Core Keywords</h3>
+              <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700">Missing Skills</h3>
             </div>
             <span class="text-xs font-mono-tag bg-amber-50 text-amber-800 px-2 py-0.5 rounded font-semibold">{{ results.missing_skills|length }} Missing</span>
           </div>
@@ -171,7 +171,7 @@
       <div class="bg-white rounded-xl border border-slate-200 shadow-2xs overflow-hidden">
         <div class="flex border-b border-slate-200 bg-slate-50/70 px-4 pt-2 gap-2 text-xs font-bold">
           <button type="button" onclick="switchTab('audit')" id="tab-btn-audit" class="px-4 py-2.5 border-b-2 border-teal-700 text-teal-800 bg-white rounded-t-lg transition">
-            Diagnostic & Structural Notes
+            Improvement Suggestions
           </button>
           <button type="button" onclick="switchTab('skills')" id="tab-btn-skills" class="px-4 py-2.5 border-b-2 border-transparent text-slate-500 hover:text-slate-800 rounded-t-lg transition">
             Skill & Certification Roadmap
@@ -182,7 +182,7 @@
         </div>
 
         <div id="tab-content-audit" class="p-6">
-          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-600 mb-3">Document Completeness Checklist</h4>
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-600 mb-3">Actionable Resume Improvements</h4>
           <ul class="space-y-2.5">
             {% for tip in results.feedback %}
               <li class="flex items-start text-xs text-slate-700 gap-2.5 bg-slate-50 p-2.5 rounded-lg border border-slate-200/60">
